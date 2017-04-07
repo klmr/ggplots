@@ -24,12 +24,8 @@ ensure_font_exists = function (font, path) {
 
 rebuild_cache(extrafontdb_path)
 
-complete_font = function (name) {
-    paste0(name, complete_font_set)
-}
-
 font_paths = function (font, path) {
-    file.path(path, complete_font(font))
+    file.path(path, paste0(font, complete_font_set))
 }
 
 make_font = function (name, basename, path) {
