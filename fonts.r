@@ -15,7 +15,7 @@ rebuild_cache = function (path) {
 }
 
 ensure_font_exists = function (font, path) {
-    if (! file.exists(file.path(path, paste0(font, complete_font_set)))) {
+    if (! all(file.exists(file.path(path, paste0(font, complete_font_set))))) {
         # Build font metrics
         # TODO: How/why/what?!
         stop('Not yet implemented')
