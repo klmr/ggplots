@@ -10,7 +10,8 @@ export_from(gg)
 #
 
 fonts = import('./fonts')
-fonts$register_fonts(c('Roboto', 'Roboto Condensed'))
+fonts$register_font('Roboto')
+fonts$register_font('Roboto Condensed', 'RobotoCondensed')
 
 theme_set(theme_minimal() +
           theme(panel.grid = element_blank(),
