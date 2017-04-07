@@ -1,7 +1,4 @@
 extrafontdb_path = try(system.file('metrics', package = 'extrafontdb', mustWork = TRUE), silent = TRUE)
-# FIXME: Make this work with un-gzipped font metrics as well.
-# FIXME: Make this work with incomplete fonts.
-complete_font_set = paste0(c('-Regular', '-Bold', '-Italic', '-BoldItalic'), '.afm.gz')
 
 rebuild_cache = function (path) {
     if (inherits(path, 'try-error')) {
@@ -46,3 +43,7 @@ register_font = function (name, basename = name) {
     do.call(pdfFonts, font_args)
     do.call(postscriptFonts, font_args)
 }
+
+# FIXME: Make this work with un-gzipped font metrics as well.
+# FIXME: Make this work with incomplete fonts.
+complete_font_set = paste0(c('-Regular', '-Bold', '-Italic', '-BoldItalic'), '.afm.gz')
