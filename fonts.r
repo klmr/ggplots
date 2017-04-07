@@ -46,9 +46,3 @@ register_font = function (name, basename = name) {
     do.call(pdfFonts, font_args)
     do.call(postscriptFonts, font_args)
 }
-
-#' @rdname register_font
-#' @export
-register_fonts = function (names) {
-    invisible(Map(register_font, names))
-}
