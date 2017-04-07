@@ -18,9 +18,13 @@ create_extrafontdb = function () {
 ensure_font_exists = function (font, path) {
     if (! all(file.exists(file.path(path, paste0(font, complete_font_set))))) {
         # Build font metrics
-        # TODO: How/why/what?!
-        stop('Not yet implemented')
+        extrafont::ttf_import(pattern = rx_escape(font))
     }
+}
+
+rx_escape = function (regex) {
+    # Adapted from <https://github.com/benjamingr/RegExp.escape>
+    gsub('([\\\\^$*+?.()|[\\]{}])', '\\\\\\1', regex, perl = TRUE)
 }
 
 font_paths = function (font, path) {
