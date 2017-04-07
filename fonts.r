@@ -28,18 +28,18 @@ complete_font = function (name) {
     paste0(name, complete_font_set)
 }
 
-font_paths = function (name, path) {
-    file.path(path, complete_font(name))
+font_paths = function (font, path) {
+    file.path(path, complete_font(font))
 }
 
-make_font = function (name, path) {
-    ensure_font_exists(name, path)
-    Type1Font(name, font_paths(name, path))
+make_font = function (name, basename, path) {
+    ensure_font_exists(basename, path)
+    Type1Font(name, font_paths(basename, path))
 }
 
 #' @export
-register_font = function (name) {
-    font = make_font(name, extrafontdb_path)
+register_font = function (name, basename = name) {
+    font = make_font(name, basename, extrafontdb_path)
     font_args = setNames(list(font), name)
     # TODO: Should this be a parameter?
     do.call(pdfFonts, font_args)
