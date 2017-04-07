@@ -1,14 +1,18 @@
-extrafontdb_path = try(system.file('metrics', package = 'extrafontdb', mustWork = TRUE), silent = TRUE)
+create_extrafontdb = function () {
+    extrafontdb_path = function ()
+        system.file('metrics', package = 'extrafontdb', mustWork = TRUE)
 
-rebuild_cache = function (path) {
+    path = try(extrafontdb_path(), silent = TRUE)
+
+    # If extrafontdb doesn’t exist, this means that the extrafont package isn’t
+    # installed. Reinstalling it will re-create the extrafont database.
+
     if (inherits(path, 'try-error')) {
-        # Build extrafontdb cache
-        extrafontdb = try(loadNamespace('extrafont'), silent = TRUE)
-        if (inherits(extrafont, 'try-error')) {
-            install.packages('extrafont')
-            extrafont = loadNamespace('extrafont')
-        }
+        install.packages('extrafont')
+        # Afterwards the path will exist.
+        path = extrafontdb_path()
     }
+    path
 }
 
 ensure_font_exists = function (font, path) {
@@ -18,8 +22,6 @@ ensure_font_exists = function (font, path) {
         stop('Not yet implemented')
     }
 }
-
-rebuild_cache(extrafontdb_path)
 
 font_paths = function (font, path) {
     file.path(path, paste0(font, complete_font_set))
@@ -44,6 +46,7 @@ register_font = function (name, basename = name) {
     do.call(postscriptFonts, font_args)
 }
 
+extrafontdb_path = create_extrafontdb()
 # FIXME: Make this work with un-gzipped font metrics as well.
 # FIXME: Make this work with incomplete fonts.
 complete_font_set = paste0(c('-Regular', '-Bold', '-Italic', '-BoldItalic'), '.afm.gz')
