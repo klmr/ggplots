@@ -9,5 +9,6 @@ export_from = function (env, symbols = NULL, target = parent.frame()) {
     if (is.null(symbols)) symbols = ls(env)
     # FIXME: This will stop working once ‹modules› requires explicitly marked
     # exports.
+    # TODO: Should this be integrated into ‹modules› akin to `export_submodule`?
     invisible(list2env(mget(symbols, env), target))
 }
