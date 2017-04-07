@@ -33,6 +33,11 @@ make_font = function (name, basename, path) {
     Type1Font(name, font_paths(basename, path))
 }
 
+#' Register a PDF/postscript font
+#'
+#' @param name the font name.
+#' @param basename the base filename used in the font metric filenames, if it
+#' differs from the \code{name}.
 #' @export
 register_font = function (name, basename = name) {
     font = make_font(name, basename, extrafontdb_path)
@@ -42,6 +47,7 @@ register_font = function (name, basename = name) {
     do.call(postscriptFonts, font_args)
 }
 
+#' @rdname register_font
 #' @export
 register_fonts = function (names) {
     invisible(Map(register_font, names))
