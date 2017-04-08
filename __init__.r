@@ -17,21 +17,19 @@ theme_set(theme_minimal() +
           theme(panel.grid = element_blank(),
                 text = element_text(family = 'Roboto Condensed')))
 
-.minimal_grid_lines = theme(panel.grid.major = theme_minimal()$panel.grid.major,
-                            panel.grid.minor = theme_minimal()$panel.grid.minor)
+.minimal_grid_lines = theme(panel.grid.major = element_line(),
+                            panel.grid.minor = element_line())
 
 # FIXME: Set font for geom_text/geom_label to “Roboto”
-# FIXME: Disable grid lines for all plots except scatter and line charts.
 # FIXME: enable major y grid lines for bar plots as well
 
-# FIXME: The following does not work.
-# geom_point = function (...) {
-#     list(gg$geom_point(...), .minimal_grid_lines)
-# }
+geom_point = function (...) {
+    list(gg$geom_point(...), .minimal_grid_lines)
+}
 
-# geom_line = function (...) {
-#     list(gg$geom_line(...), .minimal_grid_lines)
-# }
+geom_line = function (...) {
+    list(gg$geom_line(...), .minimal_grid_lines)
+}
 
 #
 # Use Viridis for the default (discrete and continuous) color and fill scales.
