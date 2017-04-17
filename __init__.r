@@ -20,8 +20,13 @@ theme_set(theme_minimal() +
 .minimal_grid_lines = theme(panel.grid.major = element_line(),
                             panel.grid.minor = element_line())
 
-# FIXME: Set font for geom_text/geom_label to “Roboto”
-# FIXME: enable major y grid lines for bar plots as well
+get_family = function () {
+    theme_get()$text$family
+}
+
+get_fontface = function () {
+    theme_get()$text$face
+}
 
 geom_point = function (...) {
     list(gg$geom_point(...), .minimal_grid_lines)
@@ -29,6 +34,14 @@ geom_point = function (...) {
 
 geom_line = function (...) {
     list(gg$geom_line(...), .minimal_grid_lines)
+}
+
+geom_text = function (..., family = get_family(), fontface = get_fontface()) {
+    gg$geom_text(..., family = family, fontface = fontface)
+}
+
+geom_label = function (..., family = get_family(), fontface = get_fontface()) {
+    gg$geom_label(..., family = family, fontface = fontface)
 }
 
 #
