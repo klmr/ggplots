@@ -52,3 +52,20 @@ register_font = function (name, basename = name) {
 
 extrafontdb_path = create_extrafontdb()
 complete_font_set = paste0(c('-Regular', '-Bold', '-Italic', '-BoldItalic'), '.afm.gz')
+
+#' Embed fonts into a generated plot file
+#'
+#' @param filename the filename of the plot file.
+#' @param format the format for the new file; see
+#' \code{\link[grDevices]{embedFonts}}. If not provided, \code{"eps2write"} is
+#' used for EPS files, \code{"ps2write"} for PS, and \code{"pdfwrite"} for PDF.
+embed = function (filename, format) {
+    if (missing(format)) {
+        format = switch(tools::file_ext(filename),
+                        eps = 'eps2write', ps = 'ps2write', pdf = 'pdfwrite')
+    }
+
+    fontmap = system.file('fontmap', package = 'extrafontdb')
+    embedFonts(filename, format, filename,
+               options = paste0('-I', shQuote(fontmap)))
+}
