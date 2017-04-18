@@ -51,6 +51,4 @@ register_font = function (name, basename = name) {
 }
 
 extrafontdb_path = create_extrafontdb()
-# FIXME: Make this work with un-gzipped font metrics as well.
-# FIXME: Make this work with incomplete fonts.
 complete_font_set = paste0(c('-Regular', '-Bold', '-Italic', '-BoldItalic'), '.afm.gz')
