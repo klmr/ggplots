@@ -42,6 +42,10 @@ geom_line = function (...) {
     list(gg$geom_line(...), .minimal_grid_lines)
 }
 
+geom_step = function (...) {
+    list(gg$geom_step(...), .minimal_grid_lines)
+}
+
 geom_text = function (..., family = get_family(), fontface = get_fontface()) {
     gg$geom_text(..., family = family, fontface = fontface)
 }
