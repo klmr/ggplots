@@ -58,13 +58,13 @@ geom_label = function (..., family = get_family(), fontface = get_fontface()) {
 # Use Viridis for the default (discrete and continuous) color and fill scales.
 #
 
-scale_colour_discrete = function (...) viridis::scale_color_viridis(discrete = TRUE)
+scale_colour_discrete = function (...) viridis::scale_color_viridis(discrete = TRUE, ...)
 scale_color_discrete = scale_colour_discrete
 
 scale_colour_continuous = viridis::scale_color_viridis
 scale_color_continuous = scale_colour_continuous
 
-scale_fill_discrete = function (...) viridis::scale_fill_viridis(discrete = TRUE)
+scale_fill_discrete = function (...) viridis::scale_fill_viridis(discrete = TRUE, ...)
 
 scale_fill_continous = viridis::scale_fill_viridis
 
