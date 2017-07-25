@@ -69,6 +69,15 @@ scale_fill_discrete = function (...) viridis::scale_fill_viridis(discrete = TRUE
 scale_fill_continous = viridis::scale_fill_viridis
 
 #
+# Add missing ggplot2 primitives
+# (<https://github.com/tidyverse/ggplot2/issues/1901>)
+#
+
+scale_color_gray = gg$scale_color_grey
+
+scale_fill_gray = gg$scale_fill_grey
+
+#
 # Fix *some* of R’s many Unicode deficiencies of the PDF device.
 #
 
