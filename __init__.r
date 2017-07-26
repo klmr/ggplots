@@ -82,6 +82,21 @@ scale_color_gray = gg$scale_color_grey
 scale_fill_gray = gg$scale_fill_grey
 
 #
+# Embed fonts when saving as PDF.
+#
+
+ggsave = function (...) {
+    call = match.call()
+    call[[1]] = quote(gg$ggsave)
+    eval.parent(call)
+    if (tolower(tools::file_ext(filename)) %in% c('eps', 'ps', 'pdf')) {
+        fonts$embed(filename)
+    }
+}
+
+formals(ggsave) = formals(gg$ggsave)
+
+#
 # Fix *some* of R’s many Unicode deficiencies of the PDF device.
 #
 

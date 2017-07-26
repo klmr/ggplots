@@ -61,7 +61,7 @@ complete_font_set = paste0(c('-Regular', '-Bold', '-Italic', '-BoldItalic'), '.a
 #' used for EPS files, \code{"ps2write"} for PS, and \code{"pdfwrite"} for PDF.
 embed = function (filename, format) {
     if (missing(format)) {
-        format = switch(tools::file_ext(filename),
+        format = switch(tolower(tools::file_ext(filename)),
                         eps = 'eps2write', ps = 'ps2write', pdf = 'pdfwrite')
     }
 
