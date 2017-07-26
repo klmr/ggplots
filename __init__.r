@@ -13,15 +13,19 @@ fonts = import('./fonts')
 fonts$register_font('Roboto')
 fonts$register_font('Roboto Condensed', 'RobotoCondensed')
 
-.theme_basic = theme_minimal() + theme(panel.grid = element_blank())
+.theme_basic = function () {
+    theme_minimal() + theme(panel.grid = element_blank())
+}
 
-theme_fancy = .theme_basic +
-    theme(text = element_text(family = 'Roboto Condensed'))
+theme_fancy = function () {
+    .theme_basic() + theme(text = element_text(family = 'Roboto Condensed'))
+}
 
-theme_publication = .theme_basic +
-    theme(text = element_text(family = 'Helvetica'))
+theme_publication = function () {
+    .theme_basic() + theme(text = element_text(family = 'Helvetica'))
+}
 
-theme_set(theme_fancy)
+theme_set(theme_fancy())
 
 .minimal_grid_lines = theme(panel.grid.major = element_line(),
                             panel.grid.minor = element_line())
