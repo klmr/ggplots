@@ -86,10 +86,19 @@ scale_fill_gray = gg$scale_fill_grey
 #
 
 ggsave = function (...) {
+    filetype = tolower(tools::file_ext(filename))
     call = match.call()
     call[[1]] = quote(gg$ggsave)
+
+    # Embedded Dingbats always cause problems in Adobe Illustrator because the
+    # AdobePiStd font is improperly installed. Therefore disable it.
+    if (filetype == 'pdf' && ! 'useDingbats' %in% names(call)) {
+        call$useDingbats = FALSE
+    }
+
     eval.parent(call)
-    if (tolower(tools::file_ext(filename)) %in% c('eps', 'ps', 'pdf')) {
+
+    if (filetype %in% c('eps', 'ps', 'pdf')) {
         fonts$embed(filename)
     }
 }
