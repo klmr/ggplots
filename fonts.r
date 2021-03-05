@@ -1,18 +1,23 @@
+box::use(
+    grDevices[pdfFonts, postscriptFonts, Type1Font]
+)
+
 create_extrafontdb = function () {
-    extrafontdb_path = function ()
+    extrafontdb_path = function () {
         system.file('metrics', package = 'extrafontdb', mustWork = TRUE)
-
-    path = try(extrafontdb_path(), silent = TRUE)
-
-    # If extrafontdb doesn’t exist, this means that the extrafont package isn’t
-    # installed. Reinstalling it will re-create the extrafont database.
-
-    if (inherits(path, 'try-error')) {
-        install.packages('extrafont')
-        # Afterwards the path will exist.
-        path = extrafontdb_path()
     }
-    path
+
+    tryCatch(
+        extrafontdb_path(),
+        error = function (.) {
+            # If extrafontdb doesn’t exist, this means that the extrafont
+            # package isn’t installed. Reinstalling it will re-create the
+            # extrafont database.
+            install.packages('extrafont')
+            # Afterwards the path will exist.
+            extrafontdb_path()
+        }
+    )
 }
 
 ensure_font_exists = function (font, path) {
@@ -44,14 +49,11 @@ make_font = function (name, basename, path) {
 #' @export
 register_font = function (name, basename = name) {
     font = make_font(name, basename, extrafontdb_path)
-    font_args = setNames(list(font), name)
+    font_args = stats::setNames(list(font), name)
     # TODO: Should this be a parameter?
-    do.call(pdfFonts, font_args)
-    do.call(postscriptFonts, font_args)
+    do.call('pdfFonts', font_args)
+    do.call('postscriptFonts', font_args)
 }
-
-extrafontdb_path = create_extrafontdb()
-complete_font_set = paste0(c('-Regular', '-Bold', '-Italic', '-BoldItalic'), '.afm.gz')
 
 #' Embed fonts into a generated plot file
 #'
@@ -61,11 +63,20 @@ complete_font_set = paste0(c('-Regular', '-Bold', '-Italic', '-BoldItalic'), '.a
 #' used for EPS files, \code{"ps2write"} for PS, and \code{"pdfwrite"} for PDF.
 embed = function (filename, format) {
     if (missing(format)) {
-        format = switch(tolower(tools::file_ext(filename)),
-                        eps = 'eps2write', ps = 'ps2write', pdf = 'pdfwrite')
+        format = switch(
+            tolower(tools::file_ext(filename)),
+            eps = 'eps2write', ps = 'ps2write', pdf = 'pdfwrite'
+        )
     }
 
     fontmap = system.file('fontmap', package = 'extrafontdb')
-    embedFonts(filename, format, filename,
-               options = paste0('-I', shQuote(fontmap)))
+    embedFonts(
+        filename, format, filename,
+        options = paste0('-I', shQuote(fontmap))
+    )
+}
+
+.on_load = function(ns) {
+    ns$extrafontdb_path = create_extrafontdb()
+    ns$complete_font_set = paste0(c('-Regular', '-Bold', '-Italic', '-BoldItalic'), '.afm.gz')
 }
