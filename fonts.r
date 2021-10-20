@@ -1,11 +1,13 @@
 box::use(
-    grDevices[pdfFonts, postscriptFonts, Type1Font]
+    extrafont,
+    grDevices[embedFonts, pdfFonts, postscriptFonts, Type1Font],
+    stats[setNames]
 )
 
 ensure_font_exists = function (font, path) {
     if (! all(file.exists(file.path(path, paste0(font, complete_font_set))))) {
         # Build font metrics
-        extrafont::ttf_import(pattern = rx_escape(font))
+        extrafont$ttf_import(pattern = rx_escape(font))
     }
 }
 
@@ -31,7 +33,7 @@ make_font = function (name, basename, path) {
 #' @export
 register_font = function (name, basename = name) {
     font = make_font(name, basename, extrafontdb_path)
-    font_args = stats::setNames(list(font), name)
+    font_args = setNames(list(font), name)
     # TODO: Should this be a parameter?
     do.call('pdfFonts', font_args)
     do.call('postscriptFonts', font_args)
@@ -43,10 +45,12 @@ register_font = function (name, basename = name) {
 #' @param format the format for the new file; see
 #' \code{\link[grDevices]{embedFonts}}. If not provided, \code{"eps2write"} is
 #' used for EPS files, \code{"ps2write"} for PS, and \code{"pdfwrite"} for PDF.
+#' @export
 embed = function (filename, format) {
+    box::use(tools)
     if (missing(format)) {
         format = switch(
-            tolower(tools::file_ext(filename)),
+            tolower(tools$file_ext(filename)),
             eps = 'eps2write', ps = 'ps2write', pdf = 'pdfwrite'
         )
     }
