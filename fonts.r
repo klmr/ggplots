@@ -2,24 +2,6 @@ box::use(
     grDevices[pdfFonts, postscriptFonts, Type1Font]
 )
 
-create_extrafontdb = function () {
-    extrafontdb_path = function () {
-        system.file('metrics', package = 'extrafontdb', mustWork = TRUE)
-    }
-
-    tryCatch(
-        extrafontdb_path(),
-        error = function (.) {
-            # If extrafontdb doesn’t exist, this means that the extrafont
-            # package isn’t installed. Reinstalling it will re-create the
-            # extrafont database.
-            install.packages('extrafont')
-            # Afterwards the path will exist.
-            extrafontdb_path()
-        }
-    )
-}
-
 ensure_font_exists = function (font, path) {
     if (! all(file.exists(file.path(path, paste0(font, complete_font_set))))) {
         # Build font metrics
@@ -77,6 +59,6 @@ embed = function (filename, format) {
 }
 
 .on_load = function(ns) {
-    ns$extrafontdb_path = create_extrafontdb()
+    ns$extrafontdb_path = system.file('metrics', package = 'extrafontdb', mustWork = TRUE)
     ns$complete_font_set = paste0(c('-Regular', '-Bold', '-Italic', '-BoldItalic'), '.afm.gz')
 }
